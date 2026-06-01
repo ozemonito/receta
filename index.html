@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stream Chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-main: #0e0e10;
+    --bg-panel: #18181b;
+    --bg-input: #1f1f23;
+    --bg-hover: #26262c;
+    --border: #2a2a2e;
+    --text-primary: #efeff1;
+    --text-secondary: #adadb8;
+    --text-muted: #7d7d8e;
+    --purple: #9147ff;
+    --purple-light: #bf94ff;
+    --green: #00c65d;
+    --orange: #ff6905;
+    --red: #eb0400;
+    --yellow: #ffd700;
+    --accent: #9147ff;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-primary);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── LAYOUT ── */
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .main-area {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── VIDEO ── */
+  .video-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #000;
+    overflow: hidden;
+  }
+
+  .video-player {
+    flex: 1;
+    background: #000;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-placeholder {
+    width: 100%;
+    height: 100%;
+    background-image: url("img/rift.webp");
+    background-size: cover;
+    position: relative;
+  }
+
+  .cam {
+  	position: absolute;
+    width: 16rem;
+    height: 12rem;
+    bottom: 0;
+    right: 0;
+    background-image: url("img/cam.png");
+    background-size: cover;
+  }
+
+  /* ── STREAM INFO BAR ── */
+  .stream-info-bar {
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+  }
+
+  .streamer-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-image: url("img/profile.png");
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+    flex-shrink: 0;
+    border: 2px solid var(--purple);
+  }
+
+  .stream-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .streamer-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .verified-badge {
+    color: var(--purple-light);
+    font-size: 13px;
+  }
+
+  .stream-title {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
+  }
+
+  .stream-tags {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    position: absolute;
+    top: 60px;
+    left: 80px;
+  }
+
+  .tag {
+    color: var(--purple-light);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .tag-lang {
+  	background: #53535f7a;
+    color: #efeff1;
+    border-radius: 0.6rem;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .live-badge {
+    background: var(--red);
+    color: #fff;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    position: absolute;
+    top: 60px;
+    left: 7px;
+  }
+
+  .stream-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 1rem;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s;
+    white-space: nowrap;
+  }
+  .btn:hover { opacity: 0.85; }
+
+  .btn-primary { background: var(--purple); color: #fff; }
+  .btn-secondary { background: var(--bg-input); color: var(--text-primary); }
+  .btn-gift { background: var(--bg-input); color: var(--text-primary); display: flex; align-items: center; gap: 5px; }
+
+  .viewer-count {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+  .viewer-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); display: inline-block; }
+
+  /* ── CHAT PANEL ── */
+  .chat-panel {
+    width: 340px;
+    min-width: 280px;
+    background: var(--bg-panel);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-header {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chat-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-primary);
+  }
+
+  .viewer-badge {
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .chat-header-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color .15s, background .15s;
+  }
+  .icon-btn:hover { color: var(--text-primary); background: var(--bg-hover); }
+
+  /* ── PINNED MESSAGE ── */
+  .pinned-msg {
+    border-bottom: 1px solid var(--border);
+    padding: 8px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: rgba(145,71,255,0.06);
+  }
+
+  .pin-icon { font-size: 12px; color: var(--purple-light); margin-top: 2px; flex-shrink: 0; }
+
+  .pinned-content { flex: 1; }
+
+  .pinned-label { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+  .pinned-text { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* ── MESSAGES ── */
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .chat-messages::-webkit-scrollbar { width: 6px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: #3a3a40; border-radius: 3px; }
+
+  .chat-msg {
+    padding: 4px 14px;
+    line-height: 1.5;
+    font-size: 13px;
+    transition: background 1s;
+    position: relative;
+  }
+  .chat-msg:hover { background: var(--bg-hover); }
+
+  .msg-header { display: inline; }
+
+  .msg-badges { display: inline-flex; align-items: center; gap: 3px; margin-right: 4px; vertical-align: middle; }
+
+  .badge {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 800;
+    vertical-align: middle;
+  }
+  .badge-mod { background: var(--green); color: #fff; }
+  .badge-sub { background: var(--purple); color: #fff; }
+  .badge-bits { background: var(--orange); color: #fff; }
+  .badge-star { background: var(--yellow); color: #111; }
+
+  .msg-username {
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .msg-username:hover { text-decoration: underline; }
+
+  .msg-colon { color: var(--text-muted); }
+
+  .msg-text { color: var(--text-primary); }
+  .msg-text.highlighted { color: var(--yellow); font-style: italic; }
+
+  /* user colors */
+  .color-purple { color: var(--purple-light); }
+  .color-orange { color: #ff7043; }
+  .color-cyan { color: #26c6da; }
+  .color-green { color: #66bb6a); }
+  .color-coral { color: #ef5350; }
+  .color-teal  { color: #26a69a; }
+  .color-blue  { color: #42a5f5; }
+  .color-pink  { color: #ec407a; }
+
+  /* reply style */
+  .msg-reply {
+    border-left: 3px solid var(--border);
+    padding-left: 10px;
+    margin-bottom: 2px;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── CHAT INPUT ── */
+  .chat-input-area {
+    border-top: 1px solid var(--border);
+    padding: 10px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .input-box {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    transition: border-color .15s;
+  }
+  .input-box:focus-within { border-color: var(--purple); }
+
+  .chat-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+  }
+  .chat-input::placeholder { color: var(--text-muted); }
+
+  .emoji-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity .15s;
+    flex-shrink: 0;
+  }
+  .emoji-btn:hover { opacity: 1; }
+
+  .input-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .chat-points {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .points-icon { font-size: 14px; }
+
+  .send-btn {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .send-btn:hover { opacity: 0.85; }
+
+  /* ── BOTTOM NAV (stream) ── */
+  .bottom-bar {
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border);
+    height: 42px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .stream-stat { display: flex; align-items: center; gap: 5px; color: #efeff1;  }
+  .stat-icon { font-size: 13px; }
+  .stat-sep { color: var(--border); }
+
+  .bottom-actions { margin-left: auto; display: flex; gap: 8px; }
+
+  .viewer-count-icon {
+  	fill: #ff8280;
+  }
+
+  .share-icon {
+  	fill: #efeff1;
+  }
+
+  .pjs .pj {
+  	width: 50px;
+  	height: 50px;
+  	position: absolute;
+  	cursor: pointer;
+  }
+
+  .pjs #primesock {
+  	background-image: url("img/pjs/primesock.png");
+  	background-size: cover;
+  } 
+
+  .pjs #monito {
+  	background-image: url("img/profile.png");
+  	background-size: cover;
+  } 
+
+  .bright {
+  	background: rgba(145, 71, 255, 0.4);
+  	transition: background 1s ease;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="main-area">
+
+    <!-- VIDEO + INFO -->
+    <div class="video-col">
+      <div class="video-player">
+        <div class="video-placeholder">
+        	<div class="cam"></div>
+        	<div class="pjs">
+        		<div id="primesock" class="pj"></div>
+        		<div id="monito" class="pj"></div>
+        	</div>
+        </div>
+      </div>
+
+      <div class="stream-info-bar">
+        <div class="streamer-avatar"></div>
+        <span class="live-badge">EN DIRECTO</span>
+        <div class="stream-meta">
+          <div class="streamer-name">
+            Cyane_lol
+          </div>
+          <div class="stream-title">SOY UNA VIEJA 🚬🚬🚬</div>
+        </div>
+        <div class="stream-tags">
+            <span class="tag">League of Legends</span>
+            <span class="tag-lang">Español</span>
+            <span class="tag-lang">English</span>
+         </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;">
+          <button class="btn btn-gift">🤍</button>
+          <button class="btn btn-gift">🎁 Regalar una sub</button>
+          <button class="btn btn-primary">⭐ Volver a suscribirte</button>
+        </div>
+      </div>
+
+      <div class="bottom-bar">
+        <div class="bottom-actions">
+	    <div class="viewer-count">
+	        <svg class='viewer-count-icon' width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M6 8a6 6 0 1 1 7.025 5.913l.012.036A3 3 0 0 0 15.883 16H17a4 4 0 0 1 4 4v2h-2v-2a2 2 0 0 0-2-2h-1.117A5 5 0 0 1 12 16.15 5 5 0 0 1 8.117 18H7a2 2 0 0 0-2 2v2H3v-2a4 4 0 0 1 4-4h1.117a3 3 0 0 0 2.846-2.051l.012-.036A6.002 6.002 0 0 1 6 8Zm6 4a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z" clip-rule="evenodd"></path></svg>
+	        <span class='viewer-count-number'>0</span>
+	    </div>
+        <div class="stream-stat"><span class="stat-icon">⏱</span>16:11:38</div>
+        <span class="stat-sep">·</span>
+          <button class="icon-btn" title="Compartir">
+          	<svg width="20" height="20" viewBox="0 0 24 24" class='share-icon' focusable="false" aria-hidden="true" role="presentation"><path d="M13 6v10h-2V6L9.5 7.5 8 6l4-4 4 4-1.5 1.5L13 6Z"></path><path d="M6 8h3v2H6v10h12V10h-3V8h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2Z"></path></svg></button>
+          <button class="icon-btn" title="Más opciones">⋯</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT PANEL -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="chat-header-left">
+          <span class="chat-title">Chat del stream</span>
+          <!-- <div class="viewer-badge">
+            ⭐ <span>vw_amarillo</span> <strong>110</strong>
+          </div> -->
+        </div>
+        <div class="chat-header-right">
+          <button class="icon-btn" title="Salir">↗</button>
+          <button class="icon-btn" title="Usuarios">👤</button>
+        </div>
+      </div>
+
+      <div class="pinned-msg">
+        <span class="pin-icon">📌</span>
+        <div class="pinned-content">
+          <div class="pinned-label">Fijado por Cyane_lol</div>
+          <div class="pinned-text">Hoy es mi cumple chavaleh</div>
+        </div>
+        <button class="icon-btn">⌄</button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <!-- Messages rendered by JS -->
+      </div>
+
+      <div class="chat-input-area">
+        <div class="input-box">
+          <input class="chat-input" type="text" placeholder="Enviar un mensaje" id="chatInput" />
+          <button class="emoji-btn" title="Emojis">😊</button>
+        </div>
+        <div class="input-actions">
+          <div class="chat-points"><span class="points-icon">💜</span> 85.428</div>
+          <button class="send-btn" onclick="sendMessage()">Enviar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const messages = [
+  { id: "primesock", user: "PrimeSock", color: "color-purple", badges: ["sub"], text: "el copy de los 109 colegios <span style='width: 2px; display: inline-block'></span><img style='width: 18px; height: 18px; display: inline-block; position: absolute; top: 5px;' src='img/israel.png'>"},
+  { id: "monito", user: "ozemonito",    color: "color-purple",  badges: ["sub"],          text: "uh uh ah ah!" },
+  // { user: "rotkohs",   color: "color-orange",  badges: ["sub"],          text: "buen banco" },
+  // { user: "aitorfbosz",color: "color-cyan",    badges: [],               text: "menos de las 12 mejor" },
+  // { user: "minxo00",   color: "color-green",   badges: ["sub"],          text: "2" },
+  // { user: "sr_adan98", color: "color-coral",   badges: ["sub"],          text: "de 8 a 12 son algunos" },
+  // { user: "Olate",     color: "color-teal",    badges: ["mod","sub"],    text: "algunos atienden a gente con pasta por la tarde pero las operaciones de caja son solo hasta las 12 no?" },
+  // { user: "sr_archii", color: "color-purple",  badges: ["mod","sub"],    text: "lunes a viernes de 8:30 a 14:30 horas" },
+  // { user: "T1_AyDen",  color: "color-blue",    badges: ["sub","bits"],   text: "2 / 2 y media" },
+  // { user: "sr_archii", color: "color-purple",  badges: ["mod","sub"],    text: "lunes a viernes de 8:30 a 14:30 horas si eres cliente" },
+  // { user: "minxo00",   color: "color-green",   badges: ["sub"],          text: "pero bueno depende lo que quieras hacer igual te cierran ventanilla antes 🐶" },
+  // { user: "Olate",     color: "color-teal",    badges: ["mod","sub"],    text: "ponme a mi" },
+  // { user: "Olate",     color: "color-teal",    badges: ["mod","sub"],    text: "😈" },
+  // { user: "anima1_",   color: "color-pink",    badges: ["sub"],          text: "🌿" },
+  // { user: "sr_archii", color: "color-purple",  badges: ["mod","sub"],    text: "🖼️", isEmote: true },
+  // { user: "anima1_",   color: "color-pink",    badges: ["sub"],          text: "encima agresivo" },
+  // { user: "rotkohs",   color: "color-orange",  badges: ["sub"],          text: "close" },
+  // {
+  //   user: "sr_archii", color: "color-purple",  badges: ["mod","sub"],
+  //   text: "Es gestion de todos modos",
+  //   reply: { to: "@minxo00", text: "pero bueno d..." }
+  // },
+];
+
+const badgeHTML = {
+  mod:  '<span class="badge badge-mod" title="Moderador">⚔</span>',
+  sub:  '<span class="badge badge-sub" title="Suscriptor">★</span>',
+  bits: '<span class="badge badge-bits" title="Bits">💎</span>',
+  star: '<span class="badge badge-star" title="VIP">⭐</span>',
+};
+
+function renderMessages() {
+  const container = document.getElementById("chatMessages");
+	document.querySelectorAll(".pj").forEach(el => {
+      function pjClickEvent(e) {
+        const viewerCountEl = document.querySelector(".viewer-count-number");
+        let viewerCount = parseInt(viewerCountEl.innerHTML);
+        viewerCount++;
+        viewerCountEl.innerHTML = viewerCount;
+        const id = el.id;
+        const messageToSend = messages.filter(m => m.id === id);
+        const messageRender = messageToSend.map(m => {
+          const badges = m.badges.map(b => badgeHTML[b] || "").join("");
+          const reply = m.reply
+            ? `<div class="msg-reply">↩ ${m.reply.to}: ${m.reply.text}</div>`
+            : "";
+          return `
+            <div class="chat-msg bright">
+              ${reply}
+              <span class="msg-badges">${badges}</span><span class="msg-username ${m.color}">${m.user}</span><span class="msg-colon">: </span><span class="msg-text">${m.text}</span>
+            </div>
+          `;
+        }).join("");
+        container.insertAdjacentHTML("beforeend", messageRender);
+        container.scrollTop = container.scrollHeight;
+        el.style.opacity = 0.4;
+        el.style.cursor = "default";
+        el.removeEventListener("click", pjClickEvent);
+        setTimeout(() => document.querySelector(".bright").classList.remove("bright"), 500);
+      }
+	  	el.addEventListener("click", pjClickEvent);
+	});
+}
+
+function sendMessage() {
+  const input = document.getElementById("chatInput");
+  const text = input.value.trim();
+  if (!text) return;
+  messages.push({ user: "Tú", color: "color-blue", badges: [], text });
+  input.value = "";
+  renderMessages();
+
+}
+
+function setPJs() {
+	const placed = [];
+	const ITEM_SIZE = 50;
+	const PADDING = 20; // margen extra entre elementos
+
+	function generatePosition(containerW, containerH) {
+	  const maxAttempts = 100;
+	  
+	  for (let i = 0; i < maxAttempts; i++) {
+	    const x = Math.random() * (containerW - ITEM_SIZE);
+	    const y = Math.random() * (containerH - ITEM_SIZE);
+	    
+	    const overlaps = placed.some(p =>
+	      Math.abs(p.x - x) < ITEM_SIZE + PADDING &&
+	      Math.abs(p.y - y) < ITEM_SIZE + PADDING
+	    );
+	    
+	    if (!overlaps) {
+	      placed.push({ x, y });
+	      return {
+	        x: (x / containerW) * 80,
+	        y: (y / containerH) * 80
+	      };
+	    }
+	  }
+	  
+	  return null; // no hay sitio libre
+	}
+
+	const container = document.querySelector(".video-placeholder");
+	const { width, height } = container.getBoundingClientRect();
+
+	const pjs = document.querySelectorAll(".pj");
+	pjs.forEach(function(el) {
+		const pos = generatePosition(width, height);
+		el.style.left = pos.x + "%";
+		el.style.top = pos.y + "%";
+	});
+}
+
+document.getElementById("chatInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") sendMessage();
+});
+
+renderMessages();
+setPJs();
+</script>
+</body>
+</html>
