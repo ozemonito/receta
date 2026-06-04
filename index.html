@@ -474,16 +474,21 @@
   	height: 50px;
   	position: absolute;
   	cursor: pointer;
+    border-radius: 50%;
+    border: 1px solid gray;
+    background-size: cover;
   }
 
   .pjs #primesock {
   	background-image: url("img/pjs/primesock.png");
-  	background-size: cover;
   } 
 
   .pjs #monito {
   	background-image: url("img/pjs/monito.webp");
-  	background-size: cover;
+  } 
+
+  .pjs #gopin {
+    background-image: url("img/pjs/gopin.webp");
   } 
 
   .bright {
@@ -504,6 +509,7 @@
         	<div class="pjs">
         		<div id="primesock" class="pj"></div>
         		<div id="monito" class="pj"></div>
+            <div id="gopin" class="pj"></div>
         	</div>
         </div>
       </div>
@@ -589,28 +595,9 @@
 
 <script>
 const messages = [
-  { id: "primesock", user: "PrimeSock", color: "color-purple", badges: ["sub"], text: "el copy de los 109 colegios <span style='width: 2px; display: inline-block'></span><img style='width: 18px; height: 18px; display: inline-block; position: absolute; top: 5px;' src='img/israel.png'>"},
-  { id: "monito", user: "ozemonito",    color: "color-purple",  badges: ["mod", "sub"],          text: "uh uh ah ah!" },
-  // { user: "rotkohs",   color: "color-orange",  badges: ["sub"],          text: "buen banco" },
-  // { user: "aitorfbosz",color: "color-cyan",    badges: [],               text: "menos de las 12 mejor" },
-  // { user: "minxo00",   color: "color-green",   badges: ["sub"],          text: "2" },
-  // { user: "sr_adan98", color: "color-coral",   badges: ["sub"],          text: "de 8 a 12 son algunos" },
-  // { user: "Olate",     color: "color-teal",    badges: ["mod","sub"],    text: "algunos atienden a gente con pasta por la tarde pero las operaciones de caja son solo hasta las 12 no?" },
-  // { user: "sr_archii", color: "color-purple",  badges: ["mod","sub"],    text: "lunes a viernes de 8:30 a 14:30 horas" },
-  // { user: "T1_AyDen",  color: "color-blue",    badges: ["sub","bits"],   text: "2 / 2 y media" },
-  // { user: "sr_archii", color: "color-purple",  badges: ["mod","sub"],    text: "lunes a viernes de 8:30 a 14:30 horas si eres cliente" },
-  // { user: "minxo00",   color: "color-green",   badges: ["sub"],          text: "pero bueno depende lo que quieras hacer igual te cierran ventanilla antes 🐶" },
-  // { user: "Olate",     color: "color-teal",    badges: ["mod","sub"],    text: "ponme a mi" },
-  // { user: "Olate",     color: "color-teal",    badges: ["mod","sub"],    text: "😈" },
-  // { user: "anima1_",   color: "color-pink",    badges: ["sub"],          text: "🌿" },
-  // { user: "sr_archii", color: "color-purple",  badges: ["mod","sub"],    text: "🖼️", isEmote: true },
-  // { user: "anima1_",   color: "color-pink",    badges: ["sub"],          text: "encima agresivo" },
-  // { user: "rotkohs",   color: "color-orange",  badges: ["sub"],          text: "close" },
-  // {
-  //   user: "sr_archii", color: "color-purple",  badges: ["mod","sub"],
-  //   text: "Es gestion de todos modos",
-  //   reply: { to: "@minxo00", text: "pero bueno d..." }
-  // },
+  { id: "primesock", user: "PrimeSock", color: "color-purple", badges: ["badge-star", "sub"], text: "el copy de los 109 colegios <span style='width: 2px; display: inline-block'></span><img style='width: 18px; height: 18px; display: inline-block; position: absolute; top: 5px;' src='img/israel.png'>"},
+  { id: "monito", user: "ozemonito",    color: "color-purple",  badges: ["badge-star", "mod", "sub"],          text: "uh uh ah ah!" },
+  { id: "gopin", user: "gopin",    color: "color-cyan",  badges: ["badge-star", "sub"],          text: "Felicidades de parte del Epstein del anime, cuando quieras celebrarlo avísame y organizamos la fiesta en la isla con waifus de las que yo se que te gustan 🤙" },
 ];
 
 const badgeHTML = {
