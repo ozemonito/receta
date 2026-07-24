@@ -23,6 +23,7 @@
     --orange: #ff6905;
     --red: #eb0400;
     --yellow: #ffd700;
+    --yellow: white;
     --accent: #9147ff;
   }
 
@@ -317,11 +318,12 @@
 
   .msg-header { display: inline; }
 
-  .msg-badges { display: inline-flex; align-items: center; gap: 3px; margin-right: 4px; vertical-align: middle; }
+  .msg-badges { margin-right: 4px; vertical-align: middle; }
 
   .badge {
     width: 16px;
     height: 16px;
+    margin-right: 3px;
     border-radius: 2px;
     display: inline-flex;
     align-items: center;
@@ -331,14 +333,16 @@
     vertical-align: middle;
   }
   .badge-mod { background: var(--green); color: #fff; }
-  .badge-sub { background: var(--purple); color: #fff; }
+  .badge-sub { background: transparent; color: #fff; }
   .badge-bits { background: var(--orange); color: #fff; }
   .badge-star { background: var(--yellow); color: #111; }
+  .badge-ciego { background: var(--white); color: #fff; }
 
   .msg-username {
     font-weight: 700;
     font-size: 13px;
     cursor: pointer;
+    white-space: nowrap;
   }
   .msg-username:hover { text-decoration: underline; }
 
@@ -618,20 +622,21 @@
 
 <script>
 const messages = [
-  { id: "primesock", user: "PrimeSock", color: "color-primesock", badges: ["badge-star", "sub", "vip"], text: "Reflexión nocturna: <br>Si un alumno es expulsado de 109 colegios, ¿es culpa del alumno o del sistema educativo?<span style='width: 2px; display: inline-block'></span><img style='width: 35px; height: 35px; display: inline-block; position: absolute; top: 40px;' src='img/pjs/primesock.gif'>"},
-  { id: "monito", user: "ozemonito",    color: "color-purple",  badges: ["badge-star", "mod", "sub"],          text: "uh uh ah ah!" },
-  { id: "gopin", user: "gopin",    color: "color-cyan",  badges: ["badge-star", "sub"],          text: "Felicidades de parte del Epstein del anime, cuando quieras celebrarlo avísame y organizamos la fiesta en la isla con waifus de las que yo se que te gustan 🤙" },
-  { id: "belgarion", user: "Belgarion",    color: "color-purple",  badges: ["badge-star", "sub"],          text: 'Como una vez dijo Mao Zedong: "Felicidades Cyane!! Q fumes muchos más y q yo lo vea!!"' },
-  { id: "arjona", user: "arjonaprz",    color: "color-purple",  badges: ["badge-star", "sub", "vip"],          text: 'Feliz cum-pleaños fumona! Eres una tía xulísima, contigo aprendo una barbaridad y te debo mucho. Sobre todo por salvarme de ELLOS. Ojalá seas muy feliz en tu día <33' },  
-  { id: "luigi-dealer", user: "luigi dealer",    color: "color-green",  badges: ["badge-star", "sub"],          text: 'Feliz cumpleaños! Spotlight moonlight fella … gracias por todas las risas 🔥🔥🔥🤣🤣🤣 atentamente el mejor support que te ha tocado en soloq.' },   
-  { id: "adrisl", user: "adrisl94",    color: "color-green",  badges: ["badge-star", "sub"],          text: 'Feliz cumple jefa, gracias por ser como eres y entrenernos siempre a pesar de ser mas gitana que un mercaillo ❤️ paselo genial en su dia ❤️' },  
+  { id: "primesock", user: "PrimeSock", color: "color-primesock", badges: ["vip", "sub"], text: "Reflexión nocturna: <br>Si un alumno es expulsado de 109 colegios, ¿es culpa del alumno o del sistema educativo?<span style='width: 2px; display: inline-block'></span><img style='width: 35px; height: 35px; display: inline-block; position: absolute; top: 40px;' src='img/pjs/primesock.gif'>"},
+  { id: "monito", user: "ozemonito",    color: "color-purple",  badges: ["mod", "vip", "sub"],          text: "uh uh ah ah!" },
+  { id: "gopin", user: "gopin",    color: "color-cyan",  badges: ["vip", "sub"],          text: "Felicidades de parte del Epstein del anime, cuando quieras celebrarlo avísame y organizamos la fiesta en la isla con waifus de las que yo se que te gustan 🤙" },
+  { id: "belgarion", user: "Belgarion",    color: "color-purple",  badges: ["vip", "sub"],          text: 'Como una vez dijo Mao Zedong: "Felicidades Cyane!! Q fumes muchos más y q yo lo vea!!"' },
+  { id: "arjona", user: "arjonaprz",    color: "color-purple",  badges: ["vip", "sub"],          text: 'Feliz cum-pleaños fumona! Eres una tía xulísima, contigo aprendo una barbaridad y te debo mucho. Sobre todo por salvarme de ELLOS. Ojalá seas muy feliz en tu día <33' },  
+  { id: "luigi-dealer", user: "luigi dealer",    color: "color-green",  badges: ["sub"],          text: 'Feliz cumpleaños! Spotlight moonlight fella … gracias por todas las risas 🔥🔥🔥🤣🤣🤣 atentamente el mejor support que te ha tocado en soloq.' },   
+  { id: "adrisl", user: "adrisl94",    color: "color-green",  badges: ["vip", "sub", 'ciego'],          text: 'Feliz cumple jefa, gracias por ser como eres y entrenernos siempre a pesar de ser mas gitana que un mercaillo ❤️ paselo genial en su dia ❤️' },  
 ];
 
 const badgeHTML = {
-  mod:  '<span class="badge badge-mod" title="Moderador">⚔</span>',
-  sub:  '<span class="badge badge-sub" title="Suscriptor">★</span>',
-  bits: '<span class="badge badge-bits" title="Bits">💎</span>',
-  star: '<span class="badge badge-star" title="VIP">⭐</span>',
+  mod:  '<span class="badge badge-mod" title="Moderador"><img width=16 height=16 src="img/mod.png"></span>',
+  sub:  '<span class="badge badge-sub" title="Suscriptor"><img width=18 height=18 src="img/sub.png"></span>',
+  bits: '<span class="badge badge-bits" title="Bits">⭐</span>',
+  vip: '<span class="badge badge-vip" title="VIP"><img width=16 height=16 src="img/vip.png"></span>',
+  ciego: '<span class="badge badge-ciego" title="Solo audio"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16"><path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"/><path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/><path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/></svg></span>',
 };
 
 function renderMessages() {
