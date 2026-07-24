@@ -348,7 +348,7 @@
   .msg-text.highlighted { color: var(--yellow); font-style: italic; }
 
   /* user colors */
-  .color-purple { color: var(--purple-light); }
+  .color-purple { color: rgb(138, 43, 226); }
   .color-orange { color: #ff7043; }
   .color-cyan { color: #26c6da; }
   .color-green { color: #66bb6a; }
@@ -356,6 +356,7 @@
   .color-teal  { color: #26a69a; }
   .color-blue  { color: #42a5f5; }
   .color-pink  { color: #ec407a; }
+  .color-primesock { color: rgb(138, 43, 226); }
 
   /* reply style */
   .msg-reply {
@@ -499,6 +500,14 @@
 
   .pjs #belgarion {
     background-image: url("img/pjs/belgarion.webp");
+  }  
+
+  .pjs #luigi-dealer {
+    background-image: url("img/pjs/luigi-dealer.jpg");
+  } 
+
+  .pjs #adrisl {
+    background-image: url("img/pjs/adrisl.png");
   } 
 
   .bright {
@@ -521,7 +530,9 @@
             <div id="monito" class="pj"></div>
             <div id="arjona" class="pj"></div>
             <div id="belgarion" class="pj"></div>
-              <div id="gopin" class="pj"></div>
+            <div id="gopin" class="pj"></div>
+            <div id="luigi-dealer" class="pj"></div>
+            <div id="adrisl" class="pj"></div>
           </div>
         </div>
       </div>
@@ -607,11 +618,13 @@
 
 <script>
 const messages = [
-  { id: "primesock", user: "PrimeSock", color: "color-purple", badges: ["badge-star", "sub"], text: "Reflexión nocturna: <br>Si un alumno es expulsado de 109 colegios, ¿es culpa del alumno o del sistema educativo?<span style='width: 2px; display: inline-block'></span><img style='width: 35px; height: 35px; display: inline-block; position: absolute; top: 40px;' src='img/pjs/primesock.gif'>"},
+  { id: "primesock", user: "PrimeSock", color: "color-primesock", badges: ["badge-star", "sub", "vip"], text: "Reflexión nocturna: <br>Si un alumno es expulsado de 109 colegios, ¿es culpa del alumno o del sistema educativo?<span style='width: 2px; display: inline-block'></span><img style='width: 35px; height: 35px; display: inline-block; position: absolute; top: 40px;' src='img/pjs/primesock.gif'>"},
   { id: "monito", user: "ozemonito",    color: "color-purple",  badges: ["badge-star", "mod", "sub"],          text: "uh uh ah ah!" },
   { id: "gopin", user: "gopin",    color: "color-cyan",  badges: ["badge-star", "sub"],          text: "Felicidades de parte del Epstein del anime, cuando quieras celebrarlo avísame y organizamos la fiesta en la isla con waifus de las que yo se que te gustan 🤙" },
-  { id: "belgarion", user: "Belgarion Do'Urden",    color: "color-green",  badges: ["badge-star", "sub"],          text: 'Como una vez dijo Mao Zedong: "Felicidades Cyane!! Q fumes muchos más y q yo lo vea!!"' },
-  { id: "arjona", user: "arjonaprz",    color: "color-purple",  badges: ["badge-star", "sub"],          text: 'Feliz cum-pleaños fumona! Eres una tía xulísima, contigo aprendo una barbaridad y te debo mucho. Sobre todo por salvarme de ELLOS. Ojalá seas muy feliz en tu día <33' },  
+  { id: "belgarion", user: "Belgarion",    color: "color-purple",  badges: ["badge-star", "sub"],          text: 'Como una vez dijo Mao Zedong: "Felicidades Cyane!! Q fumes muchos más y q yo lo vea!!"' },
+  { id: "arjona", user: "arjonaprz",    color: "color-purple",  badges: ["badge-star", "sub", "vip"],          text: 'Feliz cum-pleaños fumona! Eres una tía xulísima, contigo aprendo una barbaridad y te debo mucho. Sobre todo por salvarme de ELLOS. Ojalá seas muy feliz en tu día <33' },  
+  { id: "luigi-dealer", user: "luigi dealer",    color: "color-green",  badges: ["badge-star", "sub"],          text: 'Feliz cumpleaños! Spotlight moonlight fella … gracias por todas las risas 🔥🔥🔥🤣🤣🤣 atentamente el mejor support que te ha tocado en soloq.' },   
+  { id: "adrisl", user: "adrisl94",    color: "color-green",  badges: ["badge-star", "sub"],          text: 'Feliz cumple jefa, gracias por ser como eres y entrenernos siempre a pesar de ser mas gitana que un mercaillo ❤️ paselo genial en su dia ❤️' },  
 ];
 
 const badgeHTML = {
