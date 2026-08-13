@@ -475,52 +475,33 @@
   }
 
   .pjs .pj {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     position: absolute;
     cursor: pointer;
     border-radius: 50%;
     border: 1px solid lightgray;
-    background-size: cover;
-    -webkit-box-shadow: 2px 2px 10px 2px #000000; 
+    overflow: hidden;
+    -webkit-box-shadow: 2px 2px 10px 2px #000000;
     box-shadow: 2px 2px 10px 2px #000000;
   }
 
-  .pjs #primesock {
-    background-image: url("img/pjs/primesock.gif");
-  } 
+  .pjs .pj img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center center;
+    pointer-events: none;
+    image-rendering: auto;
+  }
 
-  .pjs #monito {
-    background-image: url("img/pjs/monito.webp");
-  } 
-
-  .pjs #gopin {
-    background-image: url("img/pjs/gopin.png");
-  }  
-
-  .pjs #arjona {
-    background-image: url("img/pjs/arjona.png");
-  }  
-
-  .pjs #belgarion {
-    background-image: url("img/pjs/belgarion.webp");
-  }  
-
-  .pjs #luigi-dealer {
-    background-image: url("img/pjs/luigi-dealer.jpg");
-  } 
-
-  .pjs #adrisl {
-    background-image: url("img/pjs/adrisl.png");
-  } 
-
-  .pjs #damnastrid {
-    background-image: url("img/pjs/damnastrid.png");
-  } 
-
-  .pjs #vergonzoso1, #vergonzoso2, #vergonzoso3, #vergonzoso4, #vergonzoso5 {
-    background-image: url("img/sub.png");
-  } 
+  /* sub.png tiene mucho margen transparente alrededor del icono;
+     se amplía para que rellene el círculo en vez de dejarlo descentrado */
+  .pjs .pj img[src="img/sub.png"] {
+    transform: scale(1.15) translateX(8%);
+    transform-origin: center center;
+  }
 
   .bright {
     background: rgba(145, 71, 255, 0.4);
@@ -538,18 +519,19 @@
         <div class="video-placeholder">
           <div class="cam"></div>
           <div class="pjs">
-            <div id="primesock" class="pj"></div>
-            <div id="monito" class="pj"></div>
-            <div id="arjona" class="pj"></div>
-            <div id="belgarion" class="pj"></div>
-            <div id="gopin" class="pj"></div>
-            <div id="luigi-dealer" class="pj"></div>
-            <div id="adrisl" class="pj"></div>
-            <div id="damnastrid" class="pj"></div>
-            <div id="vergonzoso1" class="pj"></div>
-            <div id="vergonzoso2" class="pj"></div>
-            <div id="vergonzoso3" class="pj"></div>
-            <div id="vergonzoso4" class="pj"></div>
+            <div id="primesock" class="pj"><img src="img/pjs/primesock.gif" alt="" draggable="false"></div>
+            <div id="monito" class="pj"><img src="img/pjs/monito.webp" alt="" draggable="false"></div>
+            <div id="arjona" class="pj"><img src="img/pjs/arjona.png" alt="" draggable="false"></div>
+            <div id="belgarion" class="pj"><img src="img/pjs/belgarion.webp" alt="" draggable="false"></div>
+            <div id="gopin" class="pj"><img src="img/pjs/gopin.png" alt="" draggable="false"></div>
+            <div id="luigi-dealer" class="pj"><img src="img/pjs/luigi-dealer.jpg" alt="" draggable="false"></div>
+            <div id="adrisl" class="pj"><img src="img/pjs/adrisl.png" alt="" draggable="false"></div>
+            <div id="damnastrid" class="pj"><img src="img/pjs/damnastrid.png" alt="" draggable="false"></div>
+            <div id="vergonzoso1" class="pj"><img src="img/sub.png" alt="" draggable="false"></div>
+            <div id="vergonzoso2" class="pj"><img src="img/sub.png" alt="" draggable="false"></div>
+            <div id="vergonzoso3" class="pj"><img src="img/sub.png" alt="" draggable="false"></div>
+            <div id="vergonzoso4" class="pj"><img src="img/sub.png" alt="" draggable="false"></div>
+            <div id="vergonzoso5" class="pj"><img src="img/sub.png" alt="" draggable="false"></div>
           </div>
         </div>
       </div>
@@ -636,7 +618,7 @@
 <script>
 const messages = [
   { id: "primesock", user: "PrimeSock", color: "color-primesock", badges: ["vip", "sub"], text: "Reflexión nocturna: <br>Si un alumno es expulsado de 109 colegios, ¿es culpa del alumno o del sistema educativo?<span style='width: 2px; display: inline-block'></span><img style='width: 35px; height: 35px; display: inline-block; position: absolute; top: 40px;' src='img/pjs/primesock.gif'>"},
-  { id: "monito", user: "ozemonito",    color: "color-purple",  badges: ["mod", "vip", "sub"],          text: "q paza illa, me via poné un pokillo intensito. Ya sabes que aunque te metas muxo conmigo eres mu importante pa mí y q agradezco mucho el espacio que nos has dao a todos aqui y la familia que has creado a tu alrededor (salvo por giochis), te quiero muchachachachachao chao chachachao... Feliz cumpleaños ❤️" },
+  { id: "monito", user: "ozemonito",    color: "color-purple",  badges: ["mod", "vip", "sub"],          text: "q paza illa, me via poné un pokillo intensito. Ya sabes que aunque te metas muxo conmigo eres mu importante pa mí y agradezco mucho el espacio que nos has dao a todos aqui y la familia que has creado a tu alrededor, te quiero muchachachachachao chao chachachao... Feliz cumpleaños ❤️" },
   { id: "gopin", user: "gopin",    color: "color-blue",  badges: ["vip", "sub"],          text: "Felicidades de parte del Epstein del anime, cuando quieras celebrarlo avísame y organizamos la fiesta en la isla con waifus de las que yo se que te gustan 🤙" },
   { id: "belgarion", user: "Belgarion",    color: "color-purple",  badges: ["vip", "sub"],          text: 'Como una vez dijo Mao Zedong: "Felicidades Cyane!! Q fumes muchos más y q yo lo vea!!"' },
   { id: "arjona", user: "arjonaprz",    color: "color-pink",  badges: ["vip", "sub"],          text: 'Feliz cum-pleaños fumona! Eres una tía xulísima, contigo aprendo una barbaridad y te debo mucho. Sobre todo por salvarme de ELLOS. Ojalá seas muy feliz en tu día <33' },  
@@ -647,6 +629,8 @@ const messages = [
   { id: "vergonzoso2", user: "Alfonix1",    color: "color-purple",  badges: ["sub"],  text: 'Hola, como me da mucha vergüencha mandarte una felicitación me han puesto esta por defecto. Felicidades cyane_lol! <3' },
   { id: "vergonzoso3", user: "@Titulo de la ESO",    color: "color-purple",  badges: ["sub"],  text: 'Hola, como me da mucha vergüencha mandarte una felicitación me han puesto esta por defecto. Felicidades cyane_lol! <3' }, 
   { id: "vergonzoso4", user: "marukosu",    color: "color-purple",  badges: ["sub"],  text: 'Hola, como me da mucha vergüencha mandarte una felicitación me han puesto esta por defecto. Felicidades cyane_lol! <3' },       
+  { id: "vergonzoso5", user: "Disgrace",    color: "color-purple",  badges: ["sub"],  text: 'Hola, como me da mucha vergüencha mandarte una felicitación me han puesto esta por defecto. Felicidades cyane_lol! <3' },
+
 ];
 
 const badgeHTML = {
@@ -702,41 +686,76 @@ function sendMessage() {
 
 function setPJs() {
   const placed = [];
-  const ITEM_SIZE = 50;
+  const ITEM_SIZE = 60;
   const PADDING = 20; // margen extra entre elementos
 
+  const container = document.querySelector(".video-placeholder");
+  const { width: containerW, height: containerH } = container.getBoundingClientRect();
+
+  // La imagen del mapa tiene un borde decorativo (árboles/rocas) alrededor
+  // de la zona de caminos jugable; usamos porcentajes del contenedor para
+  // que los márgenes escalen con el tamaño real de la imagen y los iconos
+  // caigan dentro de los caminos, no sobre el borde.
+  const MARGIN_TOP = containerH * 0.16;
+  const MARGIN_LEFT = containerW * 0.15;
+  const MARGIN_RIGHT = containerW * 0.14;
+  const MARGIN_BOTTOM = containerH * 0.10;
+
+  // zona ocupada por la cam (esquina inferior derecha), con un margen de seguridad
+  const cam = document.querySelector(".cam");
+  const camRect = cam.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  const CAM_SAFE_MARGIN = 20;
+  const camZone = {
+    left: (camRect.left - containerRect.left) - CAM_SAFE_MARGIN,
+    top: (camRect.top - containerRect.top) - CAM_SAFE_MARGIN,
+    right: (camRect.right - containerRect.left) + CAM_SAFE_MARGIN,
+    bottom: (camRect.bottom - containerRect.top) + CAM_SAFE_MARGIN,
+  };
+
+  function overlapsCam(x, y) {
+    return (
+      x < camZone.right &&
+      x + ITEM_SIZE > camZone.left &&
+      y < camZone.bottom &&
+      y + ITEM_SIZE > camZone.top
+    );
+  }
+
   function generatePosition(containerW, containerH) {
-    const maxAttempts = 100;
-    
+    const maxAttempts = 200;
+
+    const minX = MARGIN_LEFT;
+    const maxX = containerW - ITEM_SIZE - MARGIN_RIGHT;
+    const minY = MARGIN_TOP;
+    const maxY = containerH - ITEM_SIZE - MARGIN_BOTTOM;
+
     for (let i = 0; i < maxAttempts; i++) {
-      const x = Math.random() * (containerW - ITEM_SIZE);
-      const y = Math.random() * (containerH - ITEM_SIZE);
-      
-      const overlaps = placed.some(p =>
+      const x = minX + Math.random() * Math.max(0, maxX - minX);
+      const y = minY + Math.random() * Math.max(0, maxY - minY);
+
+      if (overlapsCam(x, y)) continue;
+
+      const overlapsOther = placed.some(p =>
         Math.abs(p.x - x) < ITEM_SIZE + PADDING &&
         Math.abs(p.y - y) < ITEM_SIZE + PADDING
       );
-      
-      if (!overlaps) {
+
+      if (!overlapsOther) {
         placed.push({ x, y });
-        return {
-          x: (x / containerW) * 80,
-          y: (y / containerH) * 80
-        };
+        return { x, y };
       }
     }
-    
+
     return null; // no hay sitio libre
   }
 
-  const container = document.querySelector(".video-placeholder");
-  const { width, height } = container.getBoundingClientRect();
-
   const pjs = document.querySelectorAll(".pj");
   pjs.forEach(function(el) {
-    const pos = generatePosition(width, height);
-    el.style.left = pos.x + "%";
-    el.style.top = pos.y + "%";
+    const pos = generatePosition(containerW, containerH);
+    if (!pos) return;
+    el.style.left = pos.x + "px";
+    el.style.top = pos.y + "px";
   });
 }
 
